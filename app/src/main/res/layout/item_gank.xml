@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/gank_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:textColor="@color/gank_item_category"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="类别"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/gank_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/gank_item_height"
+        android:paddingLeft="@dimen/gank_item_height"
+        android:paddingRight="@dimen/gank_item_height"
+        android:paddingTop="@dimen/gank_item_height">
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_lens_blue_grey_900_18dp" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="6dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/gank_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="@color/googleColorBlue"
+            android:textSize="14sp"
+            tools:text="Android开发中，有哪些让你觉得相见恨晚的方法、类或接口？" />
+
+    </LinearLayout>
+
+</LinearLayout>

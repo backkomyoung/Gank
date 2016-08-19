@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_collect"
+        android:icon="@drawable/ic_star_white_24dp"
+        android:title="@string/nav_collect" />
+
+    <item android:title="@string/title_more">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_white_24dp"
+                android:title="@string/nav_settings" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_white_24dp"
+                android:title="@string/nav_share" />
+        </menu>
+    </item>
+
+</menu>

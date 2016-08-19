@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="colorPrimaryDark">#512DA8</color>
+    <color name="colorAccent">#E040FB</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="gank_item_category">#000000</color>
+    <color name="gank_item_title">#263238</color>
+
+    <color name="googleColorBlue">#306CB6</color>
+    <color name="googleColorRed">#E83E4A</color>
+    <color name="googleColorYellow">#F2C03B</color>
+    <color name="googleColorGreen">#21AC43</color>
+
+    <color name="googleColorGrey">#bdbdbd</color>
+
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+
+</resources>

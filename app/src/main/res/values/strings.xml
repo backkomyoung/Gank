@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Android干货</string>
+
+    <string name="EXIT">再按一次退出</string>
+    <string name="NO_MORE">没有数据了</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="title_more">更多</string>
+
+    <string name="nav_settings">设置</string>
+    <string name="nav_share">分享</string>
+
+    <string name="nav_collect">收藏</string>
+
+    <string name="action_search">干货查询</string>
+    <string name="gank_search_hint">输入你想要找的干货^_^</string>
+
+    <string name="tab_title_daily">DAILY</string>
+    <string name="tab_title_Android">ANDROID</string>
+    <string name="tab_title_Meizhi">妹纸</string>
+
+    <string name="loading">玩命加载中…</string>
+
+    <string name="save_failure">保存失败,请重试</string>
+    <string name="save_no_permission">缺少权限,保存失败</string>
+    <string name="set_wallpaper_succeed">设置成功</string>
+    <string name="set_wallpaper_failure">设置失败,请重试</string>
+
+    <string name="dialog_save">保存到手机</string>
+    <string name="dialog_wallpaper">设置为壁纸</string>
+    <string name="dialog_share">分享</string>
+
+    <string name="dialog_love">喜欢这个妹纸？</string>
+
+    <string name="title_activity_meizhi">妹纸</string>
+
+
+    <string name="title_activity_search">SearchActivity</string>
+
+    <string name="action_save">保存图片</string>
+    <string name="action_share">分享图片</string>
+
+    <string name="title_activity_web">干货</string>
+
+    <string name="web_menu_favorite">收藏</string>
+    <string name="web_menu_reload">刷新</string>
+    <string name="web_menu_copy">复制链接</string>
+    <string name="web_menu_open">在浏览器打开</string>
+
+    <string name="web_open_failure">当前设备没有浏览器</string>
+    <string name="web_copy_succeed">已复制到粘贴板</string>
+
+</resources>
