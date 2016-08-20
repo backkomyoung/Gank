@@ -23,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
         android:background="?attr/selectableItemBackground">
 
     <circletextimage.viviant.com.circletextimagelib.view.CircleTextImage
@@ -58,7 +59,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_16"
             tools:text="这是一条很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长的标题" />
 
         <TextView
@@ -73,14 +74,12 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/tv_ll"
-        android:layout_alignStart="@+id/tv_ll"
-        android:layout_below="@+id/circleTextImage"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@color/colorDivider" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/circleTextImage"-->
+        <!--android:layout_marginTop="@dimen/dp_8"-->
+        <!--android:background="@color/colorDivider" />-->
 
     </RelativeLayout>
 

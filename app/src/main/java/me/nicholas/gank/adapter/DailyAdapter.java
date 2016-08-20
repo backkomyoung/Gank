@@ -18,7 +18,7 @@ import me.nicholas.gank.bean.Gank;
 /**
  * Created by Nicholas on 2016/6/22.
  */
-public class GankAdapter extends RecyclerView.Adapter<GankAdapter.ViewHolder> {
+public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> {
 
     private List<Gank> ganks;
 

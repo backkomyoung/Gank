@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import me.nicholas.gank.App;
 import me.nicholas.gank.Config;
 import me.nicholas.gank.R;
-import me.nicholas.gank.adapter.GankAdapter;
+import me.nicholas.gank.adapter.DailyAdapter;
 import me.nicholas.gank.bean.Gank;
 import me.nicholas.gank.bean.GankLitepal;
 import me.nicholas.gank.bean.GankWithDate;
@@ -48,7 +48,7 @@ public class DailyFragment extends Fragment implements GankContract.View, SwipeR
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private GankAdapter adapter;
+    private DailyAdapter adapter;
     private GankPresenter presenter;
 
     public static DailyFragment newInstance() {
@@ -61,6 +61,31 @@ public class DailyFragment extends Fragment implements GankContract.View, SwipeR
         ButterKnife.bind(this, v);
         initViews();
         return v;
+    }
+
+    private void initViews() {
+        presenter = new GankPresenter(this);
+        adapter = new DailyAdapter();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.googleColorRed,
+                R.color.googleColorGreen,
+                R.color.googleColorYellow,
+                R.color.googleColorBlue);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        adapter.setItemClickListener(new DailyAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(View view, String title, String url, int position) {
+                Intent intent=new Intent(getActivity(), WebActivity.class);
+                intent.putExtra(Config.GANK_TITLE,title);
+                intent.putExtra(Config.GANK_URL,url);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -83,29 +108,6 @@ public class DailyFragment extends Fragment implements GankContract.View, SwipeR
 
     }
 
-    private void initViews() {
-        presenter = new GankPresenter(this);
-        adapter = new GankAdapter();
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-        swipeRefreshLayout.setColorSchemeResources(
-                R.color.googleColorRed,
-                R.color.googleColorGreen,
-                R.color.googleColorYellow,
-                R.color.googleColorBlue);
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        adapter.setItemClickListener(new GankAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(View view, String title, String url, int position) {
-                Intent intent=new Intent(getActivity(), WebActivity.class);
-                intent.putExtra(Config.GANK_TITLE,title);
-                intent.putExtra(Config.GANK_URL,url);
-                startActivity(intent);
-            }
-        });
-    }
 
     @Override
     public void onDestroyView() {

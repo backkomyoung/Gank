@@ -36,6 +36,7 @@ import me.nicholas.gank.contract.CommonContract;
 import me.nicholas.gank.presenter.CommonPresenter;
 import me.nicholas.gank.ui.activity.WebActivity;
 import me.nicholas.gank.utils.ToastUtils;
+import me.nicholas.gank.widget.DividerItemDecoration;
 
 /**
  * Created by Nicholas on 2016/7/8.
@@ -90,6 +91,7 @@ public class AndroidFragment extends Fragment
         adapter = new AndroidAdapter(datas);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -107,13 +109,11 @@ public class AndroidFragment extends Fragment
                     int lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition();
                     int totalItemCount = layoutManager.getItemCount();
 
-                    if (lastVisibleItem == (totalItemCount - 1) && !isSlidingToLast) {
+                    if (lastVisibleItem == (totalItemCount - 1) && !swipeRefreshLayout.isRefreshing() && !isSlidingToLast) {
                         swipeRefreshLayout.setRefreshing(true);
                         loadMore();
                     }
-
                 }
-
             }
 
             @Override
