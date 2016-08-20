@@ -54,9 +54,45 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
 
         Common data=lists.get(position);
 
+        if (position==0){
+            showMonth(holder);
+        }else {
+
+            String lastMonth=DateUtils.getGankDate2Show(lists.get(position - 1).getPublishedAt(),DateUtils.MONTH);
+            String nextMonth=DateUtils.getGankDate2Show(data.getPublishedAt(),DateUtils.MONTH);
+
+            if (lastMonth != null) {
+                boolean compareCategory = lastMonth.equals(nextMonth);
+
+                if (compareCategory){
+                    hideMonth(holder);
+                }else {
+                    showMonth(holder);
+                }
+            }
+        }
+
+        holder.tvMonth.setText(DateUtils.getGankDate2Show(data.getPublishedAt(),DateUtils.MONTH)+"月");
         holder.imgTv.setText4CircleImage(data.getDesc());
         holder.tvTitle.setText(data.getDesc());
         holder.tvDate.setText(DateUtils.getGankDate2Show(data.getPublishedAt(),DateUtils.ALL));
+
+    }
+
+    private void showMonth(ViewHolder viewHolder) {
+        if (!isVisibility(viewHolder.tvMonth)) {
+            viewHolder.tvMonth.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideMonth(ViewHolder viewHolder) {
+        if (isVisibility(viewHolder.tvMonth)) {
+            viewHolder.tvMonth.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isVisibility(View view) {
+        return view.getVisibility() == View.VISIBLE;
     }
 
     @Override
@@ -74,6 +110,8 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
         TextView tvDate;
         @Bind(R.id.item_rl)
         RelativeLayout itemRl;
+        @Bind(R.id.date_month)
+        TextView tvMonth;
 
         public ViewHolder(View itemView) {
             super(itemView);

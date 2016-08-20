@@ -35,6 +35,7 @@
         <mapping class="me.nicholas.gank.bean.GankLitepal"></mapping>
         <mapping class="me.nicholas.gank.bean.Gank"></mapping>
         <mapping class="me.nicholas.gank.bean.Common"></mapping>
+        <mapping class="me.nicholas.gank.bean.Favorite"></mapping>
     </list>
 
     <!--

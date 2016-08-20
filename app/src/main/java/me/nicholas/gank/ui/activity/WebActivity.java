@@ -8,11 +8,13 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -22,18 +24,26 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import org.litepal.crud.DataSupport;
+
 import java.lang.reflect.Field;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.nicholas.gank.BuildConfig;
 import me.nicholas.gank.Config;
 import me.nicholas.gank.R;
+import me.nicholas.gank.bean.Favorite;
+import me.nicholas.gank.utils.DateUtils;
 import me.nicholas.gank.utils.ToastUtils;
 
 public class WebActivity extends AppCompatActivity {
 
     public static final String COPY_LABEL = "copy_label";
+
+    private static final int FLAG_SHOW = 0;
+    private static final int FLAG_HIDE = 1;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -41,11 +51,20 @@ public class WebActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @Bind(R.id.web_view)
     WebView webView;
+    @Bind(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
 
     private ClipboardManager cbm;
     private WebSettings settings;
     private String title;
     private String url;
+
+    private int touchSlop;
+    private float firstY;
+    private float currentY;
+
+    private boolean gankExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +80,11 @@ public class WebActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent=getIntent();
-        if (intent!=null){
-            title=intent.getStringExtra(Config.GANK_TITLE);
-            url=intent.getStringExtra(Config.GANK_URL);
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            title = intent.getStringExtra(Config.GANK_TITLE);
+            url = intent.getStringExtra(Config.GANK_URL);
         }
 
         initViews();
@@ -73,10 +93,9 @@ public class WebActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        toolbar.setTitle(title);
+        touchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
 
-        settings=webView.getSettings();
-
+        settings = webView.getSettings();
         settings.setDomStorageEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -91,7 +110,9 @@ public class WebActivity extends AppCompatActivity {
         webView.setWebViewClient(new GankWebViewClient());
         webView.setWebChromeClient(new GankWebChromeClient());
         webView.loadUrl(url);
+
     }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -109,26 +130,55 @@ public class WebActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        //
+        List<Favorite> favorites = DataSupport.where("title = ?", title).find(Favorite.class);
+
+        MenuItem item = menu.findItem(R.id.menu_favorite);
+
+        if (favorites.size() != 0) {
+            item.setIcon(R.drawable.ic_favorite_white_24dp);
+            gankExist = true;
+        } else {
+            item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+            gankExist = false;
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_web,menu);
+        getMenuInflater().inflate(R.menu.menu_web, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id=item.getItemId();
+        int id = item.getItemId();
 
-        switch (id){
-
+        switch (id) {
             case R.id.menu_favorite:
 
+                if (gankExist) {
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    DataSupport.deleteAll(Favorite.class, "title = ?", title);
+                    ToastUtils.Short(R.string.web_copy_favorite_delete);
+                    gankExist = false;
+                } else {
+                    item.setIcon(R.drawable.ic_favorite_white_24dp);
+
+                    Favorite favorite = new Favorite();
+                    favorite.setDate(DateUtils.getNowLongTimes());
+                    favorite.setTitle(title);
+                    favorite.setUrl(url);
+
+                    if (favorite.save()) {
+                        ToastUtils.Short(R.string.web_copy_favorite_succeed);
+                    } else {
+                        ToastUtils.Short(R.string.web_copy_favorite_failure);
+                    }
+                    gankExist = true;
+                }
                 break;
             case R.id.menu_copy:
                 copy2Clipboard();
@@ -212,7 +262,7 @@ public class WebActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        if(webView!=null) {
+        if (webView != null) {
             webView.setVisibility(View.GONE);
             webView.removeAllViews();
             webView.destroy();
@@ -226,7 +276,7 @@ public class WebActivity extends AppCompatActivity {
      * 防止内存泄露
      */
     public void releaseAllWebViewCallback() {
-        if (android.os.Build.VERSION.SDK_INT < 16) {
+        if (Build.VERSION.SDK_INT < 16) {
             try {
                 Field field = WebView.class.getDeclaredField("mWebViewCore");
                 field = field.getType().getDeclaredField("mBrowserFrame");

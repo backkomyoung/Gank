@@ -50,6 +50,7 @@ public class GankAdapter extends RecyclerView.Adapter<GankAdapter.ViewHolder> {
         if (ganks != null) {
 
             Gank gank = ganks.get(position);
+
             if (position == 0) {
                 showCategory(holder);
             } else {

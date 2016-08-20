@@ -52,4 +52,9 @@
     <string name="web_open_failure">当前设备没有浏览器</string>
     <string name="web_copy_succeed">已复制到粘贴板</string>
 
+    <string name="web_copy_favorite_delete">已取消收藏</string>
+    <string name="web_copy_favorite_succeed">已添加到收藏</string>
+    <string name="web_copy_favorite_failure">添加到收藏失败</string>
+
+
 </resources>
