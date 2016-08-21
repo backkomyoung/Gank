@@ -100,11 +100,9 @@ public class MainActivity extends AppCompatActivity
         tvNick.setText("零下");
         tvPhone.setText("15812345678");
 
-        avatarImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        avatarImg.setOnClickListener(view -> {
+            //头像点击事件
 
-            }
         });
 
         FragmentManager manager = getSupportFragmentManager();
@@ -273,7 +271,10 @@ public class MainActivity extends AppCompatActivity
         int position = (int) view.getTag();
         switch (position) {
             case 0:
-
+                if (isDoubleClick()){
+                    Intent intent = new Intent(DailyFragment.ACTION_SCROLL_TO_TOP);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                }
                 break;
             case 1:
                 if (isDoubleClick()) {

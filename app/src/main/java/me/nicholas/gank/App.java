@@ -15,12 +15,6 @@ public class App extends LitePalApplication {
     public void onCreate() {
         super.onCreate();
         context=getApplicationContext();
-//        RealmConfiguration config=new RealmConfiguration.Builder(context)
-//                .name(Config.DB_NAME)
-//                .schemaVersion(1)
-//                .deleteRealmIfMigrationNeeded()
-//                .build();
-//        Realm.setDefaultConfiguration(config);
     }
 
     public static Context getContext() {

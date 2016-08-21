@@ -15,7 +15,6 @@ import me.nicholas.gank.contract.GankContract;
 import me.nicholas.gank.utils.DateUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -40,13 +39,10 @@ public class GankModel implements GankContract.Model {
         String month = DateUtils.getGankDate(date, DateUtils.MONTH);
         String day = DateUtils.getGankDate(date, DateUtils.DAY);
 
-        return api.getGankDaily(year, month, day).flatMap(new Func1<GankDaily, Observable<GankWithDate>>() {
-            @Override
-            public Observable<GankWithDate> call(GankDaily gankDaily) {
-                return Observable.just(mergeGankDate(gankDaily, date));
-            }
-        }).subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread());
+        return api.getGankDaily(year, month, day)
+                .flatMap(gankDaily -> Observable.just(mergeGankDate(gankDaily, date)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private GankWithDate mergeGankDate(GankDaily gankDaily, String date) {

@@ -109,12 +109,9 @@ public class MeizhiFragment extends Fragment implements CommonContract.View, Swi
             }
         });
 
-        adapter.setMeizhiClickListener(new MeizhiAdapter.MeizhiClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                MeizhiDialogFragment dialog = MeizhiDialogFragment.newInstance(urls, position);
-                dialog.show(getChildFragmentManager(), "MeizhiDialogFragment");
-            }
+        adapter.setMeizhiClickListener((v, position) -> {
+            MeizhiDialogFragment dialog = MeizhiDialogFragment.newInstance(urls, position);
+            dialog.show(getChildFragmentManager(), "MeizhiDialogFragment");
         });
 
     }
@@ -129,12 +126,9 @@ public class MeizhiFragment extends Fragment implements CommonContract.View, Swi
             refresh(dbMeizhi);
         }
 
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                onRefresh();
-            }
+        swipeRefreshLayout.post(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            onRefresh();
         });
 
         broadcastManager = LocalBroadcastManager.getInstance(getActivity());

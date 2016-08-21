@@ -32,7 +32,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -58,12 +57,7 @@ public class MeizhiActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         Intent intent = getIntent();
 
@@ -114,16 +108,13 @@ public class MeizhiActivity extends AppCompatActivity {
     private void saveMeizhi() {
         RxPermissions.getInstance(this)
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean aBoolean) {
-                        if (aBoolean) {
-                            new SaveWallpaperTask().execute(url
-                                    , SaveWallpaperTask.SAVE);
-                        } else {
-                            Snackbar.make(relativeLayout, R.string.save_no_permission
-                                    , Snackbar.LENGTH_LONG).show();
-                        }
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        new SaveWallpaperTask().execute(url
+                                , SaveWallpaperTask.SAVE);
+                    } else {
+                        Snackbar.make(relativeLayout, R.string.save_no_permission
+                                , Snackbar.LENGTH_LONG).show();
                     }
                 });
     }

@@ -34,7 +34,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -113,12 +112,7 @@ public class MeizhiDialogFragment extends DialogFragment {
             }
         });
 
-        adapter.setClickListener(new MeizhiViewPagerAdapter.ClickListener() {
-            @Override
-            public void onClick(View view, int pos, float v, float v1) {
-                dismiss();
-            }
-        });
+        adapter.setClickListener((view, pos, v, v1) -> dismiss());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         dialog = builder.create();
@@ -129,61 +123,47 @@ public class MeizhiDialogFragment extends DialogFragment {
         RelativeLayout wallpaperView = (RelativeLayout) view.findViewById(R.id.dialog_meizhi_wallpaper);
         RelativeLayout shareView = (RelativeLayout) view.findViewById(R.id.dialog_meizhi_share);
 
-        adapter.setLongClickListener(new MeizhiViewPagerAdapter.LongClickListener() {
-            @Override
-            public void onLongClick(View v, int pos) {
-                dialog.show();
-            }
-        });
+        adapter.setLongClickListener((v, pos) -> dialog.show());
 
-        saveView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    doSave();
-                    dialog.dismiss();
-                } else {
-                    new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem()), SaveWallpaperTask.SAVE);
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        wallpaperView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem()), SaveWallpaperTask.WALLPAPER);
+        saveView.setOnClickListener(view1 -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                doSave();
+                dialog.dismiss();
+            } else {
+                new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem()), SaveWallpaperTask.SAVE);
                 dialog.dismiss();
             }
         });
 
-        shareView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        wallpaperView.setOnClickListener(view1 -> {
+            new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem()), SaveWallpaperTask.WALLPAPER);
+            dialog.dismiss();
+        });
 
-                getShareBitmap(urls.get(viewPager.getCurrentItem()))
-                        .subscribe(new Observer<Bitmap>() {
-                            @Override
-                            public void onCompleted() {
-                            }
+        shareView.setOnClickListener(view1 -> {
 
-                            @Override
-                            public void onError(Throwable e) {
-                                ToastUtils.Short(e.getMessage());
-                            }
+            getShareBitmap(urls.get(viewPager.getCurrentItem()))
+                    .subscribe(new Observer<Bitmap>() {
+                        @Override
+                        public void onCompleted() {
+                        }
 
-                            @Override
-                            public void onNext(Bitmap bitmap) {
-                                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null, null));
-                                Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_SEND);
-                                intent.putExtra(Intent.EXTRA_STREAM, uri);
-                                intent.setType("image/*");
-                                startActivity(Intent.createChooser(intent, App.getContext().getResources().getString(R.string.action_share)));
-                            }
-                        });
-                dialog.dismiss();
-            }
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.Short(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Bitmap bitmap) {
+                            Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null, null));
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_STREAM, uri);
+                            intent.setType("image/*");
+                            startActivity(Intent.createChooser(intent, App.getContext().getResources().getString(R.string.action_share)));
+                        }
+                    });
+            dialog.dismiss();
         });
 
     }
@@ -191,15 +171,12 @@ public class MeizhiDialogFragment extends DialogFragment {
     private void doSave() {
         RxPermissions.getInstance(App.getContext())
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean aBoolean) {
-                        if (aBoolean) {
-                            new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem())
-                                    , SaveWallpaperTask.SAVE);
-                        } else {
-                            ToastUtils.Short(R.string.save_no_permission);
-                        }
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        new SaveWallpaperTask().execute(urls.get(viewPager.getCurrentItem())
+                                , SaveWallpaperTask.SAVE);
+                    } else {
+                        ToastUtils.Short(R.string.save_no_permission);
                     }
                 });
     }

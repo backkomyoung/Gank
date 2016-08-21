@@ -10,7 +10,6 @@ import me.nicholas.gank.bean.UpdateDate;
 import me.nicholas.gank.contract.CommonContract;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -33,12 +32,7 @@ public class CommonModel implements CommonContract.Model {
         ApiFather api= ApiEngine.getInstance().api;
 
         return api.getCommon(type,ApiFather.COUNT,page)
-                .map(new Func1<Data<Common>, List<Common>>() {
-                    @Override
-                    public List<Common> call(Data<Common> commonData) {
-                        return commonData.getResults();
-                    }
-                })
+                .map(Data::getResults)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -32,9 +32,7 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         this.listener = listener;
     }
 
-    public void setDatas(List<Gank> ganks) {
-        if (ganks == null)
-            return;
+    public DailyAdapter(List<Gank> ganks) {
         this.ganks = ganks;
     }
 
@@ -98,7 +96,6 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         TextView mCategory;
         @Bind(R.id.gank_title)
         TextView mTitle;
-
 
         public ViewHolder(View itemView) {
             super(itemView);

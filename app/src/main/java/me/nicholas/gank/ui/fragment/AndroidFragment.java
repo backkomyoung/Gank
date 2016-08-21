@@ -128,14 +128,11 @@ public class AndroidFragment extends Fragment
         });
 
 
-        adapter.setItemClickListener(new AndroidAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(View view, String title, String url, int position) {
-                Intent intent=new Intent(getActivity(), WebActivity.class);
-                intent.putExtra(Config.GANK_TITLE,title);
-                intent.putExtra(Config.GANK_URL,url);
-                startActivity(intent);
-            }
+        adapter.setItemClickListener((view, title, url, position) -> {
+            Intent intent=new Intent(getActivity(), WebActivity.class);
+            intent.putExtra(Config.GANK_TITLE,title);
+            intent.putExtra(Config.GANK_URL,url);
+            startActivity(intent);
         });
     }
 
@@ -149,12 +146,9 @@ public class AndroidFragment extends Fragment
             refresh(androids);
         }
 
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                onRefresh();
-            }
+        swipeRefreshLayout.post(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            onRefresh();
         });
 
         broadcastManager = LocalBroadcastManager.getInstance(getActivity());

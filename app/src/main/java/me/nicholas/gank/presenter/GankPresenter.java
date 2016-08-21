@@ -68,6 +68,31 @@ public class GankPresenter extends RxSubManager implements GankContract.Presente
     }
 
     @Override
+    public void getMore(String date) {
+
+        Subscription s = model.getGank(date)
+                .subscribe(new Observer<GankWithDate>() {
+                    @Override
+                    public void onCompleted() {
+                        view.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.onFailure(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(GankWithDate gankWithDate) {
+                        view.onMoreSucceed(gankWithDate);
+                    }
+                });
+
+        addSubscription(s);
+
+    }
+
+    @Override
     public void unSubscription() {
         view = null;
         unSub();

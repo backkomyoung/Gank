@@ -18,6 +18,7 @@ public interface GankContract {
     }
 
     interface View extends BaseView<GankWithDate>{
+        void onMoreSucceed(GankWithDate data);
         void onDateSucceed(UpdateDate updateDate);
         void onDateFailure(String err);
         void onDateComplete();
@@ -26,5 +27,6 @@ public interface GankContract {
     interface Presenter extends BasePresenter{
         void getDate();
         void getGank(String date);
+        void getMore(String date);
     }
 }
